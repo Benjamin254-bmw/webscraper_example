@@ -42,7 +42,7 @@ def save_to_csv(data, filename="data/headlines.csv"):
 def save_to_json(data, filename="data/headlines.json"):
     with open(filename, "w", encoding="utf-8") as file:
         json.dump(data, file, indent=4)
-    with logging.info(f"saved {len(data)} headlines to {filename}")
+    logging.info(f"saved {len(data)} headlines to {filename}")
 
 
 # function to save data in SQLite database
