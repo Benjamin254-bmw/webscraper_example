@@ -13,11 +13,11 @@ logging.basicConfig(filename="scraper.log", level=logging.INFO, format="%(asctim
 URL = "https://www.bbc.com/news"
 
 # function to fetch the webpage
-def fetch_page(URL):
+def fetch_page(url):
     try:
         response = requests.get(url, timeout=10)
         response.raise_for_status()
-        return response.txt
+        return response.text
     except requests.exceptions.RequestException as e:
         logging.error(f"Error fetching the page: {e}")
         print("Failed to fetch webpage. Check logs for details.")
@@ -38,6 +38,12 @@ def save_to_csv(data, filename="data/headlines.csv"):
             writer.writerow([row])
     logging.info(f"saved {len(data)} headlines to {filename}")
 
+# function to save data in JSON
+def save_to_json(data, filename="data/headlines.json"):
+    with open(filename, "w", encoding="utf-8") as file:
+        json.dump(data, file, indent=4)
+    with logging.info(f"saved {len(data)} headlines to {filename}")
+
 
 # function to save data in SQLite database
 def save_to_db(data, db_name="database/headlines.db"):
@@ -45,7 +51,7 @@ def save_to_db(data, db_name="database/headlines.db"):
     cursor = conn.cursor()
     cursor.execute("CREATE TABLE IF NOT EXISTS news (id INTEGER PRIMARY KEY, headline TEXT)")
     for row in data:
-        cursor.execute("INSERT INTO news (headlines) VALUES (?)", (row,))
+        cursor.execute("INSERT INTO news (headline) VALUES (?)", (row,))
 
     conn.commit()
     conn.close()
