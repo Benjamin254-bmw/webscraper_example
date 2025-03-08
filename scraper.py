@@ -18,3 +18,13 @@ data = [headline.get_text(strips=True) for headline in headlines]
 
 with open("headlines.json", "w", encoding="utf-8") as file:
     json.dump(data, file, indent=4)
+
+    try:
+        response = requests.get(URL, timeout=10) # Set timeout
+        response.raise_for_status() # Raise an error if requests fails
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching the page: {e}")
+        exit()
+
+print("Headlines have been saved")
