@@ -1,4 +1,6 @@
 import requests
+import json
+
 from bs4 import BeautifulSoup
 
 # URL of the website to scrape
@@ -11,12 +13,8 @@ soup = BeautifulSoup(response.text, "html.parser")
 # Find all headlines
 headlines = soup.find_all("h3")
 
-# Save the headlines
-with open("headlines.txt", "w", encoding="utf-8") as file:
-    for headline in headlines:
-        text = headline.get_text(strip=True)
-        print(text)
-        file.write(text + "\n")
+# Open a JSON file and write the data
+data = [headline.get_text(strips=True) for headline in headlines]
 
-print("Headlines saved to headlines.txt")
-
+with open("headlines.json", "w", encoding="utf-8") as file:
+    json.dump(data, file, indent=4)
