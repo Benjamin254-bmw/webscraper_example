@@ -1,6 +1,6 @@
 import requests
 import json
-
+import sqlite3
 from bs4 import BeautifulSoup
 
 # URL of the website to scrape
@@ -26,5 +26,16 @@ with open("headlines.json", "w", encoding="utf-8") as file:
     except requests.exceptions.RequestException as e:
         print(f"Error fetching the page: {e}")
         exit()
+
+# Store data in a database
+conn = sqlite3.connect("headlines.db")
+cursor = conn.cursor()
+
+cursor.execute("CREATE TABLE IF NOT EXISTS news (headline TEXT)")
+for headline in headlines:
+    cursor.execute("INSERT INTO news VALUES (?)", (headlines.get_text(strip=True),))
+
+conn.commit()
+conn.close()
 
 print("Headlines have been saved")
