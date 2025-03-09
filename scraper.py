@@ -10,7 +10,7 @@ logging.basicConfig(filename="scraper.log", level=logging.INFO, format="%(asctim
 
 
 # URL of the website to scrape
-URL = "https://www.bbc.com/news"
+URL = "https://news.ycombinator.com/"
 
 # function to fetch the webpage
 def fetch_page(url):
